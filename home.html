@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personalized Medicine</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            background: black; /* Fallback for unsupported browsers */
+        }
+
+        /* Video background styling */
+        .background-video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 320px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .container:hover {
+            transform: scale(1.05);
+        }
+
+        h1 {
+            font-size: 2rem;
+            color: #4A90E2;
+            margin-bottom: 20px;
+            line-height: 1.4;
+            word-wrap: break-word;
+            animation: fadeIn 1s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        label {
+            display: block;
+            font-size: 1rem;
+            color: #555;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .dropdown-container {
+            position: relative;
+            width: 100%;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #4A90E2;
+            border-radius: 6px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        input[type="text"]:focus {
+            border-color: #ff6f61;
+            box-shadow: 0 0 8px rgba(255, 111, 97, 0.6);
+        }
+
+        ul.dropdown {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            max-height: 150px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            background: white;
+            position: absolute;
+            width: 100%;
+            z-index: 1000;
+            border-radius: 6px;
+            display: none;
+            animation: dropdownFade 0.3s ease;
+        }
+
+        @keyframes dropdownFade {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        ul.dropdown li {
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        ul.dropdown li:hover {
+            background-color: #f1f1f1;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 12px 24px;
+            background-color: #ff6f61;
+            color: #ffffff;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        button:hover {
+            background-color: #d85a50;
+            transform: translateY(-2px);
+        }
+
+        /* Style for Reset button */
+        .reset-btn {
+            background-color: #ccc;
+            color: #333;
+            margin-left: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .reset-btn:hover {
+            background-color: #b3b3b3;
+            transform: translateY(-2px);
+        }
+    </style>
+    <script src="/static/dropdown.js"></script>
+</head>
+<body>
+    <!-- Background Video -->
+    <video class="background-video" autoplay loop muted>
+        <source src="static/bg.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <div class="container">
+        <h1>Personalized Medicine <br> Recommending System</h1>
+        <form action="/results" method="post">
+            <label for="medicine">Search Medicine</label>
+            <div class="dropdown-container">
+                <input type="text" id="medicine" name="medicine_name" autocomplete="off" placeholder="Type medicine name..." required>
+                <ul class="dropdown"></ul>
+            </div>
+            <div>
+                <button type="submit">Submit</button>
+                <button type="reset" class="reset-btn">Reset</button> <!-- Reset Button -->
+            </div>
+        </form>
+    </div>
+</body>
+</html>
