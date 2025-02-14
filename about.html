@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learn More - Medicine Recommender</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background: #0A0A0A; /* Dark background */
+            color: #fff;
+            font-size: 1.1rem;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            background-image: url('https://www.transparenttextures.com/patterns/black-linen.png'); /* subtle texture */
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 1rem 5%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #00e5ff;
+            letter-spacing: 2px;
+        }
+
+        .about {
+            padding: 5rem 8% 4rem 8%;
+            text-align: center;
+            max-width: 900px;
+            margin: 0 auto;
+            background: rgba(0, 0, 0, 0.85);
+            border-radius: 15px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease-in-out;
+        }
+
+        .about:hover {
+            transform: translateY(-10px); /* Slight hover effect for the about section */
+        }
+
+        .about h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            color: #fff;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .about p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            color: #bbb;
+            line-height: 1.7;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        h2 {
+            font-size: 2rem;
+            color: #00e5ff;
+            font-weight: 700;
+            margin-top: 3rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin-top: 1rem;
+            text-align: left;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            color: #aaa;
+        }
+
+        ul li {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .cta-buttons .button {
+            padding: 1.2rem 3rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border: 2px solid #00e5ff;
+            border-radius: 50px;
+            text-decoration: none;
+            color: #00e5ff;
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
+        }
+
+        .cta-buttons .button:hover {
+            background: #00bcd4;
+            color: #fff;
+            transform: scale(1.1);
+            box-shadow: 0 8px 16px rgba(0, 229, 255, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .about h1 {
+                font-size: 2.5rem;
+            }
+            .about p {
+                font-size: 1rem;
+            }
+            .cta-buttons .button {
+                font-size: 1rem;
+                padding: 0.8rem 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">MedRecs</div>
+    </nav>
+
+    <section class="about">
+        <h1>About Our Medicine Recommender</h1>
+        <p>Our platform leverages advanced algorithms to provide accurate and reliable alternative medicine recommendations.</p>
+
+        <h2>How It Works</h2>
+        <ul>
+        <p>Simply enter the name of your medicine, and our system will suggest alternatives based on effectiveness and safety.</p>
+    </ul>
+
+        <h2>Why Choose Us?</h2>
+        <ul>
+            <li>✅ Reliable recommendations</li>
+            <li>✅ Easy-to-use interface</li>
+            <li>✅ Free and accessible for everyone</li>
+        </ul>
+
+        <h2>Important Disclaimer</h2>
+        <ul>
+        <p>This tool is designed to provide recommendations, but it does not replace professional medical advice. Always consult your doctor before making any changes to your medication.</p>
+        </ul>
+
+        <h2>FAQs</h2>
+        <ul>
+            <h2><li><strong>Is this tool free?</h2></strong> 
+
+                Yes, our platform is completely free to use.</li>
+            <h2><li><strong>How accurate are the recommendations?</h2></strong>
+                Our system uses verified medical data to provide the best alternatives.</li>
+        </ul>
+
+        <div class="cta-buttons">
+            <a href="/" class="button">Back to Home</a>
+        </div>
+    </section>
+</body>
+</html>

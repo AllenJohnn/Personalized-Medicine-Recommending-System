@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        body {
+            background: linear-gradient(135deg, #1c1c1c, #222222);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: #111;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 15px 40px rgba(0, 229, 255, 0.15);
+            width: 100%;
+            max-width: 380px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        .container:hover {
+            transform: translateY(-5px);
+        }
+        h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            color: #00e5ff;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 8px;
+            background: #222;
+            color: white;
+            font-size: 16px;
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+        }
+        input:focus {
+            background: #333;
+            box-shadow: 0 0 5px 2px rgba(0, 229, 255, 0.5);
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #00e5ff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s ease;
+        }
+        button:hover {
+            background-color: #ff4081;
+        }
+        a {
+            color: #00e5ff;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        a:hover {
+            text-decoration: underline;
+            color: #ff4081;
+        }
+        p {
+            margin-top: 20px;
+        }
+        .message {
+            color: red;
+            margin-top: 10px;
+        }
+
+        /* Mobile-friendly design */
+        @media screen and (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            .container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Login</h2>
+        <form id="loginForm" action="{{ url_for('login') }}" method="POST">
+            <div>
+                <input type="text" id="username" name="username" placeholder="Username" required aria-label="Enter your username">
+            </div>
+            <div>
+                <input type="password" id="password" name="password" placeholder="Password" required aria-label="Enter your password">
+            </div>
+            <div>
+                <button type="submit">Login</button>
+            </div>
+        </form>
+        {% if message %}
+            <p class="message">{{ message }}</p>
+        {% endif %}
+        <p>Don't have an account? <a href="{{ url_for('register') }}">Register Now</a></p>
+    </div>
+
+    <script>
+        document.querySelector('#loginForm').addEventListener('submit', function(event) {
+            const username = document.querySelector('#username').value;
+            const password = document.querySelector('#password').value;
+            if (!username || !password) {
+                event.preventDefault();
+                alert("Please fill in both fields!");
+            }
+        });
+    </script>
+</body>
+</html>

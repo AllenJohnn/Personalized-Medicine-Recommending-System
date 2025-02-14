@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Personalized Medicine</title>
+    <title>Personalized Medicine Recommender</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Poppins', sans-serif;
@@ -13,68 +14,58 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            overflow: hidden;
-            background: black; /* Fallback for unsupported browsers */
-        }
-
-        /* Video background styling */
-        .background-video {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            z-index: -1;
+            background: #121212;
+            color: #fff;
+            text-align: center;
         }
 
         .container {
-            background-color: rgba(255, 255, 255, 0.9);
+            background-color: rgba(0, 0, 0, 0.8);
             padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-            text-align: center;
-            width: 320px;
+            border-radius: 15px;
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.5);
+            width: 100%;
+            max-width: 500px;
             position: relative;
             z-index: 1;
+            animation: fadeInUp 0.8s ease;
         }
 
-        .container:hover {
-            transform: scale(1.05);
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         h1 {
-            font-size: 2rem;
-            color: #4A90E2;
+            font-size: 2.2rem;
+            color: #00e5ff;
             margin-bottom: 20px;
-            line-height: 1.4;
-            word-wrap: break-word;
+            line-height: 1.3;
             animation: fadeIn 1s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
         }
 
         label {
             display: block;
             font-size: 1rem;
-            color: #555;
+            color: #bbb;
             margin-bottom: 10px;
             font-weight: bold;
-        }
-
-        .dropdown-container {
-            position: relative;
-            width: 100%;
         }
 
         input[type="text"] {
             width: 100%;
             padding: 12px;
+            margin: 10px 0;
             border: 2px solid #4A90E2;
             border-radius: 6px;
+            background-color: #333;
+            color: #fff;
             font-size: 1rem;
             outline: none;
             transition: border-color 0.3s ease, box-shadow 0.3s ease;
@@ -82,7 +73,38 @@
 
         input[type="text"]:focus {
             border-color: #ff6f61;
-            box-shadow: 0 0 8px rgba(255, 111, 97, 0.6);
+            box-shadow: 0 0 10px rgba(255, 111, 97, 0.7);
+        }
+
+        button {
+            padding: 12px 24px;
+            background: linear-gradient(45deg, #ff6f61, #ff9a8b);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: transform 0.2s ease;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+        }
+
+        .reset-btn {
+            background-color: #ccc;
+            color: #333;
+            margin-left: 10px;
+        }
+
+        .reset-btn:hover {
+            background-color: #b3b3b3;
+        }
+
+        .dropdown-container {
+            position: relative;
+            width: 100%;
         }
 
         ul.dropdown {
@@ -92,81 +114,146 @@
             max-height: 150px;
             overflow-y: auto;
             border: 1px solid #ddd;
-            background: white;
+            background: #222;
             position: absolute;
             width: 100%;
-            z-index: 1000;
-            border-radius: 6px;
+            border-radius: 8px;
             display: none;
-            animation: dropdownFade 0.3s ease;
-        }
-
-        @keyframes dropdownFade {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            z-index: 1000;
         }
 
         ul.dropdown li {
-            padding: 10px;
+            padding: 12px;
+            color: #fff;
             cursor: pointer;
         }
 
         ul.dropdown li:hover {
-            background-color: #f1f1f1;
+            background-color: #444;
         }
 
-        button {
-            margin-top: 20px;
-            padding: 12px 24px;
-            background-color: #ff6f61;
-            color: #ffffff;
-            border: none;
-            border-radius: 6px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease;
+        .error-message {
+            color: #ff6f61;
+            margin-top: 10px;
+            font-size: 1.1rem;
         }
 
-        button:hover {
-            background-color: #d85a50;
-            transform: translateY(-2px);
+        .success-message {
+            color: #00e5ff;
+            margin-top: 10px;
+            font-size: 1.1rem;
         }
 
-        /* Style for Reset button */
-        .reset-btn {
-            background-color: #ccc;
-            color: #333;
-            margin-left: 10px;
-            transition: background-color 0.3s ease;
+        footer {
+            position: absolute;
+            bottom: 20px;
+            width: 100%;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #bbb;
         }
 
-        .reset-btn:hover {
-            background-color: #b3b3b3;
-            transform: translateY(-2px);
+        footer a {
+            color: #ff6f61;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        footer a:hover {
+            color: #fff;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 600px) {
+            .container {
+                width: 90%;
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
         }
     </style>
     <script src="/static/dropdown.js"></script>
 </head>
 <body>
-    <!-- Background Video -->
-    <video class="background-video" autoplay loop muted>
-        <source src="static/bg.mp4" type="video/mp4">
-        Your browser does not support the video tag.
-    </video>
-
     <div class="container">
-        <h1>Personalized Medicine <br> Recommending System</h1>
+        <h1>Personalized Medicine Recommender</h1>
+
         <form action="/results" method="post">
             <label for="medicine">Search Medicine</label>
+
             <div class="dropdown-container">
-                <input type="text" id="medicine" name="medicine_name" autocomplete="off" placeholder="Type medicine name..." required>
-                <ul class="dropdown"></ul>
+                <input type="text" id="medicine" name="medicine_name" autocomplete="off" placeholder="Type medicine name..." required oninput="showSuggestions()">
+                <ul class="dropdown" id="suggestions-list"></ul>
             </div>
+
             <div>
-                <button type="submit">Submit</button>
-                <button type="reset" class="reset-btn">Reset</button> <!-- Reset Button -->
+                <button type="submit">Search</button>
+                <button type="reset" class="reset-btn">Reset</button>
             </div>
         </form>
+
+        <!-- Success/Error Message -->
+        <div id="feedback-message" class="success-message"></div>
     </div>
+
+    <!-- Footer with social links -->
+    <footer>
+        <div>Connect with us:</div>
+        <a href="https://www.facebook.com" target="_blank">Facebook</a>
+        <a href="https://www.instagram.com" target="_blank">Instagram</a>
+        <a href="https://www.twitter.com" target="_blank">Twitter</a>
+    </footer>
+
+    <script>
+        const suggestionsList = document.getElementById('suggestions-list');
+        const medicineInput = document.getElementById('medicine');
+        const feedbackMessage = document.getElementById('feedback-message');
+
+        const medicines = [
+            'Paracetamol', 'Aspirin', 'Ibuprofen', 'Amoxicillin', 'Metformin', 'Atorvastatin', 'Lisinopril', 'Prednisone'
+        ];
+
+        function showSuggestions() {
+            const query = medicineInput.value.toLowerCase();
+            const filteredSuggestions = medicines.filter(medicine => medicine.toLowerCase().includes(query));
+
+            suggestionsList.innerHTML = '';
+            if (filteredSuggestions.length > 0) {
+                filteredSuggestions.forEach(suggestion => {
+                    const li = document.createElement('li');
+                    li.textContent = suggestion;
+                    li.onclick = () => selectSuggestion(suggestion);
+                    suggestionsList.appendChild(li);
+                });
+                suggestionsList.style.display = 'block';
+                feedbackMessage.textContent = '';
+            } else {
+                suggestionsList.style.display = 'none';
+                feedbackMessage.textContent = 'No results found for your search';
+                feedbackMessage.classList.add('error-message');
+            }
+        }
+
+        function selectSuggestion(suggestion) {
+            medicineInput.value = suggestion;
+            suggestionsList.style.display = 'none';
+            feedbackMessage.textContent = `You selected ${suggestion}`;
+            feedbackMessage.classList.remove('error-message');
+            feedbackMessage.classList.add('success-message');
+        }
+
+        document.getElementById('medicine').addEventListener('focus', () => {
+            suggestionsList.style.display = 'block';
+        });
+
+        document.getElementById('medicine').addEventListener('blur', () => {
+            setTimeout(() => {
+                suggestionsList.style.display = 'none';
+            }, 200);
+        });
+    </script>
 </body>
 </html>
