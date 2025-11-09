@@ -1,0 +1,123 @@
+/* Global reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Body Styling */
+body {
+    background: linear-gradient(135deg, #4e73df, #1c1c1c);  /* Gradient background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color: #fff;
+}
+
+/* Container Styling */
+.container {
+    background: #111;
+    padding: 40px 30px;
+    border-radius: 10px;
+    box-shadow: 0 15px 40px rgba(0, 229, 255, 0.2);
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+    transition: transform 0.3s ease-in-out;
+}
+
+.container:hover {
+    transform: translateY(-5px);
+}
+
+/* Title Styling */
+h2 {
+    font-size: 28px;
+    margin-bottom: 20px;
+    font-weight: bold;
+    color: #00e5ff;
+}
+
+/* Form Input Styling */
+input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 2px solid #222;
+    border-radius: 8px;
+    background: #222;
+    color: #fff;
+    font-size: 16px;
+    transition: background 0.3s ease, border 0.3s ease;
+}
+
+input:focus {
+    background: #333;
+    border-color: #00e5ff;
+    outline: none;
+}
+
+/* Button Styling */
+button {
+    width: 100%;
+    padding: 12px;
+    background-color: #00e5ff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s ease;
+}
+
+button:hover {
+    background-color: #ff4081;
+}
+
+/* Message and link styling */
+p {
+    margin-top: 20px;
+}
+
+p a {
+    color: #00e5ff;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+p a:hover {
+    text-decoration: underline;
+    color: #ff4081;
+}
+
+/* Error message styling */
+p.error {
+    color: red;
+    font-size: 14px;
+}
+
+/* Mobile responsiveness */
+@media screen and (max-width: 480px) {
+    body {
+        padding: 10px;
+    }
+
+    .container {
+        padding: 20px;
+        max-width: 100%;
+    }
+
+    h2 {
+        font-size: 24px;
+    }
+
+    input {
+        font-size: 14px;
+    }
+
+    button {
+        font-size: 14px;
+    }
+}

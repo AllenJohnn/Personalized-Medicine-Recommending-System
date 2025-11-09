@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="MedRecs is a personalized medicine recommendation system that uses AI to improve healthcare decisions.">
+    <title>Medicine Recommender</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"> <!-- FontAwesome for Icons -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;        
+        }
+
+        html {
+            scroll-behavior: smooth; /* Smooth scroll effect */
+        }
+
+        body {
+            background: #000;
+            color: #fff;
+            font-size: 1rem;
+            overflow-x: hidden;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 1rem 5%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #00e5ff;
+        }
+
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: linear-gradient(to right, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7)), url('static/hero-bg.jpg');
+            background-size: cover;
+            background-position: center;
+            animation: gradientShift 15s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .hero .content {
+            max-width: 800px;
+            width: 100%;
+            padding: 0 2rem;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            background: linear-gradient(to right, #00e5ff, #ff4081);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            animation: fadeIn 2s ease-in-out forwards;
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            color: #bbb;
+            margin: 1.5rem 0;
+            opacity: 0;
+            animation: fadeIn 2s ease-in-out 0.5s forwards;
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+        }
+
+        .cta-buttons .button {
+            padding: 1rem 3rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border: 2px solid #00e5ff;
+            border-radius: 50px;
+            text-decoration: none;
+            color: #00e5ff;
+            transition: all 0.3s ease;
+        }
+
+        .cta-buttons .button:hover {
+            transform: scale(1.1);
+            background-color: #ff4081;
+            color: white;
+            box-shadow: 0 4px 12px rgba(0, 229, 255, 0.2);
+        }
+
+        /* Features Section */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 3rem;
+            padding: 5rem 10%;
+            text-align: center;
+        }
+
+        .feature-card {
+            background: #111;
+            padding: 2rem;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 229, 255, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 229, 255, 0.3);
+        }
+
+        .icon {
+            font-size: 4rem; /* Increased icon size */
+            color: #00e5ff;
+            margin-bottom: 1.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .feature-card:hover .icon {
+            color: #ff4081; /* Change icon color on hover */
+        }
+
+        .feature-card h3 {
+            font-size: 1.8rem;
+            color: #00e5ff;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card p {
+            font-size: 1rem;
+            color: #aaa;
+        }
+
+        /* Social Media Icons */
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .social-links a {
+            color: #00e5ff;
+            font-size: 3rem; /* Increased size for the icons */
+            transition: color 0.3s ease;
+        }
+
+        .social-links a:hover {
+            color: #ff4081; /* Change color on hover */
+        }
+
+        /* Webkit browsers - custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #00e5ff;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #222;
+        }
+
+        @media (max-width: 768px) {
+            .features {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .cta-buttons .button {
+                padding: 0.8rem 2rem;
+                font-size: 1rem;
+            }
+
+            .social-links a {
+                font-size: 2rem; /* Adjust for smaller screens */
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">MedRecs</div>
+    </nav>
+
+    <section class="hero" aria-label="Medicine Recommender with AI">
+        <div class="content">
+            <h1>Medicine Recommender</h1>
+            <p>Get personalized, intelligent suggestions for alternative medications, all in one click!</p>
+            <div class="cta-buttons">
+                <a href="/login" class="button">Get Started</a> <!-- Redirects to login.html -->
+                <a href="/about" class="button">Learn More</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="feature-card">
+            <div class="icon">
+                <i class="fas fa-search"></i> <!-- FontAwesome Search Icon -->
+            </div>
+            <h3>Accurate Predictions</h3>
+            <p>Get reliable, accurate alternative medicines powered by advanced AI</p>
+        </div>
+        <div class="feature-card">
+            <div class="icon">
+                <i class="fas fa-th-large"></i> <!-- FontAwesome Easy-to-use Interface Icon -->
+            </div>
+            <h3>Easy to Use</h3>
+            <p>Our interface is simple, intuitive, and easy to navigate</p>
+        </div>
+        <div class="feature-card">
+            <div class="icon">
+                <i class="fas fa-robot"></i> <!-- FontAwesome AI Icon -->
+            </div>
+            <h3>Verified Data</h3>
+            <p>Uses verified medical data to provide the best alternatives</p>
+        </div>
+    </section>
+
+    <footer style="text-align: center; padding: 2rem 0; background: #111; color: #bbb;">
+        <div class="social-links">
+            <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook"></i></a>
+            <a href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
+        </div>
+    </footer>
+</body>
+</html>

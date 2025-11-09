@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #121212, #2c3e50);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #fff;
+            overflow: hidden;
+        }
+
+        .container {
+            background: #1f1f1f;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+            max-width: 500px;
+            width: 100%;
+            position: relative;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            color: #00e5ff;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        p {
+            font-size: 1.2rem;
+            color: #bbb;
+            margin-bottom: 30px;
+        }
+
+        a {
+            color: #00e5ff;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .contact-btn, .back-button {
+            padding: 16px 32px;
+            background: linear-gradient(45deg, #ff6f61, #ff9a8b);
+            color: #fff;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 25px;
+            width: 100%;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .contact-btn:hover, .back-button:hover {
+            background: linear-gradient(45deg, #ff9a8b, #ff6f61);
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .contact-btn:focus, .back-button:focus {
+            outline: none;
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 999;
+        }
+
+        .dialog-box {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.9);
+            padding: 35px;
+            border-radius: 15px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.7);
+            text-align: center;
+            width: 90%;
+            max-width: 400px;
+            z-index: 1000;
+        }
+
+        .dialog-box h2 {
+            font-size: 1.8rem;
+            color: #00e5ff;
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+
+        .dialog-box input, .dialog-box textarea {
+            width: 100%;
+            padding: 14px;
+            margin: 12px 0;
+            border: 2px solid #333;
+            border-radius: 10px;
+            background: #444;
+            color: #fff;
+            font-size: 1rem;
+            transition: border 0.3s ease;
+        }
+
+        .dialog-box input:focus, .dialog-box textarea:focus {
+            border-color: #00e5ff;
+            outline: none;
+        }
+
+        .dialog-box button {
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            width: 100%;
+            transition: background 0.3s ease, box-shadow 0.2s ease;
+        }
+
+        .submit-btn {
+            background: #00e5ff;
+            color: #121212;
+            border: none;
+        }
+
+        .close-btn {
+            background: #ff6f61;
+            color: white;
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            background: #00b8cc;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .close-btn:hover {
+            background: #ff3d2e;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Contact Us</h1>
+        <p>If you have any questions, feel free to reach out to us at <a href="mailto:support@medrecs.com">support@medrecs.com</a></p>
+        <button class="contact-btn" onclick="openDialog()">Request a Medicine</button>
+        <button class="back-button" onclick="goToHome()">Back to Home</button>
+    </div>
+
+    <!-- Background overlay -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- Dialog Box -->
+    <div class="dialog-box" id="medicineDialog">
+        <h2>Request a Medicine</h2>
+        <input type="text" id="medicineName" placeholder="Enter medicine name...">
+        <textarea id="medicineDetails" rows="4" placeholder="Enter details about the medicine..."></textarea>
+        <br>
+        <button class="submit-btn" onclick="submitRequest()">Submit</button>
+        <button class="close-btn" onclick="closeDialog()">Close</button>
+    </div>
+
+    <script>
+        function openDialog() {
+            document.getElementById('medicineDialog').style.display = 'block';
+            document.getElementById('overlay').style.display = 'block';
+        }
+
+        function closeDialog() {
+            document.getElementById('medicineDialog').style.display = 'none';
+            document.getElementById('overlay').style.display = 'none';
+        }
+
+        function submitRequest() {
+            let medicineName = document.getElementById('medicineName').value.trim();
+            let medicineDetails = document.getElementById('medicineDetails').value.trim();
+
+            if (!medicineName || !medicineDetails) {
+                alert('Please enter both the medicine name and details.');
+                return;
+            }
+
+            fetch("{{ url_for('request_medicine') }}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    medicine_name: medicineName,
+                    details: medicineDetails
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+                closeDialog();
+            })
+            .catch(error => console.error("Error:", error));
+        }
+
+        function goToHome() {
+            window.location.href = "{{ url_for('home') }}";
+        }
+    </script>
+</body>
+</html>
