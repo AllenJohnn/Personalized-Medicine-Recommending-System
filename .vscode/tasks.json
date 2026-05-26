@@ -1,0 +1,25 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "dev: full stack",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoExit",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"${workspaceFolder}\\dev.ps1"
+			],
+			"isBackground": false,
+			"problemMatcher": [],
+			"group": "build",
+			"presentation": {
+				"reveal": "always",
+				"panel": "dedicated",
+				"focus": true
+			}
+		}
+	]
+}
