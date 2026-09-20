@@ -1,0 +1,15 @@
+{
+  "name": "MediRecommend",
+  "short_name": "MediRec",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0f172a",
+  "icons": [
+    {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Twitter_Verified_Badge.svg/512px-Twitter_Verified_Badge.svg.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

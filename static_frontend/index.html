@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediRecommend - Personalized Medicine</title>
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="apple-touch-icon" href="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Twitter_Verified_Badge.svg/512px-Twitter_Verified_Badge.svg.png">
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#" onclick="navigate('home')">
+                <i class="fa-solid fa-pills me-2"></i>MediRecommend
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center" id="navLinks">
+                    <!-- Nav links injected via JS -->
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container py-5" id="app-content">
+        <!-- Views injected here -->
+    </main>
+
+    <!-- VIEWS TEMPLATES -->
+
+    <!-- Home View -->
+    <template id="tpl-home">
+        <div class="d-flex flex-column justify-content-center align-items-center text-center" style="min-height: 80vh;">
+            <div class="mb-5">
+                <h1 class="fw-bold mb-3" style="font-size: clamp(3rem, 6vw, 5rem); letter-spacing: -0.04em; font-family: var(--font-serif)">
+                    MediRecommend.
+                </h1>
+                <p class="text-muted mx-auto" style="font-size: 1.25rem; max-width: 500px; font-family: var(--font-sans); line-height: 1.6;">
+                    An algorithmic index of over 9,700 pharmaceutical compounds and safe alternatives.
+                </p>
+            </div>
+            
+            <button onclick="navigate('search')" class="btn btn-dark btn-lg rounded-0 px-5 py-3 fw-bold shadow-none d-inline-flex align-items-center justify-content-center" style="font-family: var(--font-mono); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.1em;">
+                Enter Database <i class="fa-solid fa-arrow-right ms-3"></i>
+            </button>
+        </div>
+    </template>
+
+    <!-- Login View -->
+    <template id="tpl-login">
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-5">
+                <div class="card p-5 mt-5">
+                    <div class="text-center mb-4">
+                        <h2 class="fw-bold">Welcome Back</h2>
+                        <p class="text-muted">Login to your account</p>
+                    </div>
+                    <form id="loginForm" onsubmit="handleLogin(event)">
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Username</label>
+                            <div class="input-group">
+                                <span class="input-group-text border-end-0"><i class="fa-solid fa-user text-muted"></i></span>
+                                <input type="text" class="form-control border-start-0" id="loginUsername" required>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">Password</label>
+                            <div class="input-group">
+                                <span class="input-group-text border-end-0"><i class="fa-solid fa-lock text-muted"></i></span>
+                                <input type="password" class="form-control border-start-0" id="loginPassword" required>
+                            </div>
+                        </div>
+                        <div id="loginError" class="text-danger small mb-3 fw-bold"></div>
+                        <button type="submit" class="btn btn-primary w-100 py-2 fw-bold">Login</button>
+                    </form>
+                    <div class="text-center mt-4">
+                        <p class="text-muted mb-0">Don't have an account? <a href="#" onclick="navigate('register')" class="text-primary text-decoration-none fw-bold hover-blue">Register</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- Register View -->
+    <template id="tpl-register">
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-5">
+                <div class="card p-5 mt-4">
+                    <div class="text-center mb-4">
+                        <h2 class="fw-bold">Create Account</h2>
+                        <p class="text-muted">Sign up to save bookmarks & history</p>
+                    </div>
+                    <form id="registerForm" onsubmit="handleRegister(event)">
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Username</label>
+                            <div class="input-group">
+                                <span class="input-group-text border-end-0"><i class="fa-solid fa-user text-muted"></i></span>
+                                <input type="text" class="form-control border-start-0" id="regUsername" required minlength="3" maxlength="32">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Password</label>
+                            <div class="input-group">
+                                <span class="input-group-text border-end-0"><i class="fa-solid fa-lock text-muted"></i></span>
+                                <input type="password" class="form-control border-start-0" id="regPassword" required minlength="8">
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">Confirm Password</label>
+                            <div class="input-group">
+                                <span class="input-group-text border-end-0"><i class="fa-solid fa-check text-muted"></i></span>
+                                <input type="password" class="form-control border-start-0" id="regConfirmPassword" required minlength="8">
+                            </div>
+                        </div>
+                        <div id="regError" class="text-danger small mb-3 fw-bold"></div>
+                        <button type="submit" class="btn btn-primary w-100 py-2 fw-bold">Register</button>
+                    </form>
+                    <div class="text-center mt-4">
+                        <p class="text-muted mb-0">Already have an account? <a href="#" onclick="navigate('login')" class="text-primary text-decoration-none fw-bold hover-blue">Login</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- Suggest View -->
+    <template id="tpl-suggest">
+        <div class="row justify-content-center mt-5">
+            <div class="col-md-6 col-lg-5">
+                <div class="card p-4">
+                    <h3 class="fw-bold mb-3">Suggest a Medicine</h3>
+                    <p class="text-muted small">Can't find what you're looking for? Let our medical database team know so we can add it.</p>
+                    <form id="suggestForm" onsubmit="handleSuggest(event)">
+                        <div class="mb-3">
+                            <label class="form-label">Medicine Name</label>
+                            <input type="text" id="suggestName" class="form-control" required>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label">Reason / Condition (Details)</label>
+                            <textarea id="suggestDesc" class="form-control" rows="3" required minlength="20" placeholder="Please provide at least 20 characters of details..."></textarea>
+                        </div>
+                        <div id="suggestMsg" class="mb-3 fw-bold small"></div>
+                        <button type="submit" class="btn btn-primary w-100">Submit Suggestion</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- Search View -->
+    <template id="tpl-search">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 text-center mt-4">
+                <h2 class="fw-bold mb-4" style="font-size: 2.5rem; letter-spacing: -0.02em;">Search Medicine Database</h2>
+                <div class="search-box-wrapper position-relative text-start">
+                    <div class="input-group input-group-lg border border-dark bg-transparent">
+                        <span class="input-group-text border-0 ps-4"><i class="fa-solid fa-magnifying-glass"></i></span>
+                        <input type="text" id="searchInput" class="form-control border-0 px-3" placeholder="TYPE A MEDICINE NAME..." oninput="handleSearchInput()" onkeydown="handleSearchKeydown(event)" autocomplete="off">
+                        <button onclick="executeSearch()" class="btn btn-primary px-4 fw-bold border-0 border-start border-dark">Search</button>
+                    </div>
+                    <!-- Autocomplete Dropdown -->
+                    <ul id="autocompleteResults" class="list-group position-absolute w-100 mt-0 d-none border border-dark border-top-0" style="z-index: 1000; max-height: 300px; overflow-y: auto;">
+                    </ul>
+                </div>
+                
+                <div id="searchResults" class="row text-start mt-5 g-4">
+                    <!-- Search results injected here -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- Compare Floating Bar -->
+        <div id="compareBar" class="position-fixed bottom-0 start-50 translate-middle-x bg-dark text-white px-4 py-3 shadow-lg d-none justify-content-between align-items-center" style="z-index: 1050; width: 90%; max-width: 600px;">
+            <span class="fw-bold" style="font-family: var(--font-mono)"><i class="fa-solid fa-scale-balanced me-2"></i> <span id="compareCount">0</span> Selected for Comparison</span>
+            <div>
+                <button onclick="clearCompare()" class="btn btn-sm btn-outline-light me-2 border-0">Clear</button>
+                <button onclick="openCompareModal()" class="btn btn-sm btn-light text-dark fw-bold">Compare Now</button>
+            </div>
+        </div>
+    </template>
+
+    <!-- Dashboard View -->
+    <template id="tpl-dashboard">
+        <div class="row mb-4">
+            <div class="col-12">
+                <h2 class="fw-bold">My Dashboard</h2>
+                <p class="text-muted">Welcome back, <span id="dashUsername" class="fw-bold text-dark"></span>!</p>
+            </div>
+        </div>
+        <div class="row g-4">
+            <div class="col-lg-6">
+                <div class="card h-100">
+                    <div class="card-header bg-transparent border-0 pt-4 pb-0 px-4 d-flex justify-content-between align-items-center">
+                        <h5 class="fw-bold mb-0"><i class="fa-solid fa-clock-rotate-left me-2"></i>Recent Searches</h5>
+                        <button onclick="clearHistory()" class="btn btn-sm btn-outline-danger px-3">Clear</button>
+                    </div>
+                    <div class="card-body px-4">
+                        <ul id="historyList" class="list-group list-group-flush">
+                            <li class="list-group-item text-muted border-0">Loading...</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-6">
+                <div class="card h-100">
+                    <div class="card-header bg-transparent border-0 pt-4 pb-0 px-4">
+                        <h5 class="fw-bold mb-0"><i class="fa-solid fa-bookmark me-2"></i>Saved Bookmarks</h5>
+                    </div>
+                    <div class="card-body px-4">
+                        <ul id="bookmarksList" class="list-group list-group-flush">
+                            <li class="list-group-item text-muted border-0">Loading...</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- Compare Modal (Outside Templates so it persists) -->
+    <div class="modal fade" id="compareModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header border-bottom-0 pb-0">
+                    <h4 class="modal-title fw-bold" style="font-family: var(--font-serif)">Medicine Comparison</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body pt-4">
+                    <div class="table-responsive">
+                        <table class="table table-bordered border-dark" id="compareTable">
+                            <thead class="table-light border-dark">
+                                <tr id="compareTableHead"></tr>
+                            </thead>
+                            <tbody id="compareTableBody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- App Logic -->
+    <script src="/app.js"></script>
+</body>
+</html>

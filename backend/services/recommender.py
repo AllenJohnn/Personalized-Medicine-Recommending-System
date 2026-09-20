@@ -32,23 +32,28 @@ def load_recommender(csv_path: str | None = None) -> dict[str, Any]:
     for column in required_columns:
         frame[column] = frame[column].astype(str).str.strip()
 
+    # To find true alternatives, we heavily weight the Reason (condition) and Description (active ingredients).
+    # We explicitly EXCLUDE Side_Effects from the training tags so the algorithm doesn't group 
+    # completely different medicines together just because they both cause "Nausea, Headache".
     frame["tags"] = (
         frame["Reason"].fillna("")
         + " "
-        + frame["Description"].fillna("")
+        + frame["Reason"].fillna("") # Double weight the primary condition
         + " "
-        + frame["Side_Effects"].fillna("")
+        + frame["Description"].fillna("")
     ).str.lower().map(stem_text)
     frame = frame[frame["tags"].str.strip() != ""].reset_index(drop=True)
 
     vectorizer = TfidfVectorizer(max_features=8000, ngram_range=(1, 2))
     tfidf_matrix = vectorizer.fit_transform(frame["tags"])
-    similarity_matrix = cosine_similarity(tfidf_matrix)
+    
+    # We do NOT precompute the NxN similarity matrix here as it consumes ~750MB RAM and slows down startup.
+    # We will compute it on-the-fly for O(1) memory and O(N) time per query.
 
     return {
         "frame": frame,
         "vectorizer": vectorizer,
-        "similarity_matrix": similarity_matrix,
+        "tfidf_matrix": tfidf_matrix,
     }
 
 
@@ -98,17 +103,27 @@ def medicine_detail(frame: pd.DataFrame, medicine_name: str) -> dict[str, Any] |
     }
 
 
+@lru_cache(maxsize=256)
 def recommend_alternatives(csv_path: str | None, medicine_name: str, limit: int = 6) -> dict[str, Any]:
+    """
+    Given a medicine name, return a list of recommended alternatives based on
+    TF-IDF cosine similarity.
+    """
     dataset = load_recommender(csv_path)
     frame = dataset["frame"]
-    similarity_matrix = dataset["similarity_matrix"]
+    tfidf_matrix = dataset["tfidf_matrix"]
 
     row, matched_name = find_medicine_row(frame, medicine_name)
     if row is None:
         return {"matched_name": None, "results": []}
 
     index = row.name
-    scores = list(enumerate(similarity_matrix[index]))
+    
+    # Compute similarity on-the-fly against all other medicines
+    # This prevents the memory crash and is blazingly fast
+    sim_scores = cosine_similarity(tfidf_matrix[index], tfidf_matrix).flatten()
+    
+    scores = list(enumerate(sim_scores))
     scores.sort(key=lambda item: item[1], reverse=True)
 
     results = []

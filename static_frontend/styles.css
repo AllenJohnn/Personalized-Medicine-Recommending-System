@@ -1,0 +1,313 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Playfair+Display:wght@400;600;700&display=swap');
+
+:root {
+    --bs-body-bg: #ffffff;
+    --bs-body-color: #0f172a;
+    --bs-primary: #0f172a;
+    --bs-primary-rgb: 15, 23, 42;
+    --border-color: #0f172a;
+    
+    --font-sans: 'Inter', system-ui, sans-serif;
+    --font-serif: 'Playfair Display', serif;
+    --font-mono: 'JetBrains Mono', monospace;
+}
+
+body {
+    font-family: var(--font-sans);
+    background-color: var(--bs-body-bg) !important;
+    color: var(--bs-body-color);
+    transition: background-color 0.3s, color 0.3s;
+}
+
+img {
+    filter: grayscale(100%);
+    opacity: 0.9;
+}
+
+h1, h2, h3, h4, h5, h6, .navbar-brand {
+    font-family: var(--font-serif);
+    font-weight: 700;
+}
+
+/* Sharp, no border radius */
+* {
+    border-radius: 0 !important;
+}
+
+/* Navbar */
+.navbar {
+    background-color: var(--bs-body-bg) !important;
+    border-bottom: 1px solid var(--border-color);
+    transition: background-color 0.3s;
+}
+
+.navbar-brand, .nav-link {
+    color: var(--bs-body-color) !important;
+}
+
+/* Cards & Panels */
+.card {
+    background-color: var(--bs-body-bg);
+    border: 1px solid var(--border-color) !important;
+    box-shadow: none !important;
+    color: var(--bs-body-color);
+}
+
+.card:hover {
+    box-shadow: 4px 4px 0px 0px rgba(15,23,42,0.1) !important;
+    transform: translateY(-2px);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Buttons */
+.btn {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0.5rem;
+}
+
+.btn-primary {
+    background-color: var(--bs-primary);
+    color: var(--bs-body-bg) !important;
+    border: 1px solid var(--border-color);
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+.btn-primary:hover {
+    opacity: 0.8;
+}
+
+.btn-outline-primary, .btn-outline-danger {
+    background-color: transparent;
+    color: var(--bs-body-color) !important;
+    border: 1px solid var(--border-color);
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+.btn-outline-primary:hover, .btn-outline-danger:hover {
+    background-color: var(--border-color);
+    color: var(--bs-body-bg) !important;
+}
+
+.btn-light {
+    border: 1px solid var(--border-color);
+    background-color: var(--bs-body-bg);
+    color: var(--bs-body-color) !important;
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+.btn-light:hover {
+    background-color: var(--border-color);
+    color: var(--bs-body-bg) !important;
+}
+
+/* Inputs */
+.form-control, .input-group-text, textarea {
+    border: 1px solid var(--border-color) !important;
+    background-color: transparent !important;
+    color: var(--bs-body-color) !important;
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    box-shadow: none !important;
+}
+
+.form-control:focus, textarea:focus {
+    outline: none !important;
+    border-width: 2px !important;
+}
+
+.search-box-wrapper .input-group {
+    border: none !important;
+}
+
+/* Labels and Tags */
+label, .badge, .small, .text-muted, p.text-muted, .form-label {
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.75rem;
+    color: inherit;
+    opacity: 0.7;
+}
+
+.badge {
+    border: 1px solid var(--border-color);
+    background-color: transparent !important;
+    color: var(--bs-body-color) !important;
+    font-weight: 500;
+}
+
+/* Dropdown */
+#autocompleteResults {
+    border: 1px solid var(--border-color);
+    border-top: none;
+    box-shadow: none !important;
+    background: var(--bs-body-bg);
+}
+
+.autocomplete-item {
+    border: none !important;
+    border-bottom: 1px solid var(--border-color) !important;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--bs-body-color);
+    background: transparent;
+}
+.autocomplete-item:hover {
+    background-color: rgba(0,0,0,0.05);
+}
+
+/* Medicine Card */
+.medicine-card {
+    border: 1px solid var(--border-color) !important;
+    border-top: 4px solid var(--bs-primary) !important;
+}
+
+.medicine-card h5 {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    text-transform: none;
+    letter-spacing: normal;
+    transition: color 0.15s ease;
+}
+
+.hover-blue:hover {
+    color: #3b82f6 !important;
+    text-decoration: underline;
+}
+
+/* Dashboard List */
+.list-group-item {
+    border-color: var(--border-color) !important;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    background-color: transparent;
+    color: inherit;
+}
+
+/* Custom Scrollbar for dropdowns */
+::-webkit-scrollbar {
+    width: 6px;
+}
+::-webkit-scrollbar-track {
+    background: transparent;
+    border-left: 1px solid var(--border-color);
+}
+::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 0;
+}
+
+/* -------- LAYOUT SPECIFICS -------- */
+@media (min-width: 992px) {
+    .editorial-left-col {
+        border-right: 1px solid var(--border-color);
+    }
+}
+@media (max-width: 991px) {
+    .editorial-left-col {
+        border-bottom: 1px solid var(--border-color);
+        margin-bottom: 2rem;
+    }
+}
+
+/* -------- DARK MODE OVERRIDES -------- */
+body.dark-mode {
+    --bs-body-bg: #0f172a;
+    --bs-body-color: #f8fafc;
+    --bs-primary: #f8fafc;
+    --border-color: #334155;
+}
+
+body.dark-mode .card:hover {
+    box-shadow: 4px 4px 0px 0px rgba(255,255,255,0.1) !important;
+}
+
+body.dark-mode .hover-blue:hover {
+    color: #60a5fa !important;
+}
+
+body.dark-mode .autocomplete-item:hover {
+    background-color: rgba(255,255,255,0.05);
+}
+
+/* Force Bootstrap utilities to adapt to dark mode */
+body.dark-mode .text-dark { color: #f8fafc !important; }
+body.dark-mode .border-dark { border-color: #334155 !important; }
+body.dark-mode .text-muted { color: #94a3b8 !important; }
+
+body.dark-mode .btn-outline-dark {
+    color: #f8fafc !important;
+    border-color: #334155 !important;
+}
+body.dark-mode .btn-outline-dark:hover {
+    background-color: #334155 !important;
+}
+
+body.dark-mode .btn-dark {
+    background-color: #f8fafc !important;
+    color: #0f172a !important;
+    border-color: #f8fafc !important;
+}
+body.dark-mode .btn-dark:hover {
+    background-color: #cbd5e1 !important;
+}
+
+body.dark-mode .bg-dark { background-color: #1e293b !important; }
+
+body.dark-mode .table, 
+body.dark-mode .table th, 
+body.dark-mode .table td {
+    color: #f8fafc !important;
+    border-color: #334155 !important;
+    background-color: transparent !important;
+}
+body.dark-mode .table-light th {
+    background-color: #1e293b !important;
+}
+
+/* -------- COMPARE MODAL -------- */
+.modal-content {
+    background-color: var(--bs-body-bg);
+    color: var(--bs-body-color);
+    border: 1px solid var(--border-color);
+}
+.modal-header {
+    border-bottom: 1px solid var(--border-color);
+}
+
+/* -------- PRINT STYLES -------- */
+@media print {
+    .navbar, .search-box-wrapper, .btn, #autocompleteResults, #compareBar {
+        display: none !important;
+    }
+    body {
+        background-color: white !important;
+        color: black !important;
+    }
+    .card {
+        border: 1px solid black !important;
+        break-inside: avoid;
+        margin-bottom: 20px;
+    }
+    #searchResults {
+        display: block;
+    }
+    .col-md-6, .col-lg-4 {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+}

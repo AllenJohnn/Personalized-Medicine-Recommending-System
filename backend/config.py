@@ -22,7 +22,7 @@ class Config:
     SESSION_COOKIE_SAMESITE = "Lax"
     SESSION_COOKIE_SECURE = os.getenv("SESSION_COOKIE_SECURE", "false").lower() == "true"
     ADMIN_USERNAME = os.getenv("ADMIN_USERNAME", "admin")
-    FRONTEND_DIST = os.getenv("FRONTEND_DIST", str(BASE_DIR / "frontend" / "dist"))
+    FRONTEND_DIST = os.getenv("FRONTEND_DIST", str(BASE_DIR / "static_frontend"))
     CSV_PATH = os.getenv("MEDICINE_CSV_PATH", str(DEFAULT_CSV_PATH))
     MAX_CONTENT_LENGTH = 1024 * 1024
     JSON_SORT_KEYS = False
