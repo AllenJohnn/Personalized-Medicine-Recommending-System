@@ -26,8 +26,8 @@ auth_bp = Blueprint("auth", __name__, url_prefix="/api/auth")
 
 
 def _create_auth_payload(user: User):
-    access_token = create_access_token(identity=user.id, additional_claims={"username": user.username, "is_admin": user.is_admin})
-    refresh_token = create_refresh_token(identity=user.id, additional_claims={"username": user.username, "is_admin": user.is_admin})
+    access_token = create_access_token(identity=str(user.id), additional_claims={"username": user.username, "is_admin": user.is_admin})
+    refresh_token = create_refresh_token(identity=str(user.id), additional_claims={"username": user.username, "is_admin": user.is_admin})
     return access_token, refresh_token, {"user": user.to_dict()}
 
 
@@ -96,7 +96,7 @@ def refresh():
     if user is None:
         return json_response(False, None, "User not found.", 404)
 
-    access_token = create_access_token(identity=user.id, additional_claims={"username": user.username, "is_admin": user.is_admin})
+    access_token = create_access_token(identity=str(user.id), additional_claims={"username": user.username, "is_admin": user.is_admin})
     return json_response(True, {"access_token": access_token, "user": user.to_dict()}, "Token refreshed.")
 
 

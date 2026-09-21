@@ -24,7 +24,7 @@ class Config:
     ADMIN_USERNAME = os.getenv("ADMIN_USERNAME", "admin")
     FRONTEND_DIST = os.getenv("FRONTEND_DIST", str(BASE_DIR / "static_frontend"))
     CSV_PATH = os.getenv("MEDICINE_CSV_PATH", str(DEFAULT_CSV_PATH))
-    MAX_CONTENT_LENGTH = 1024 * 1024
+    MAX_CONTENT_LENGTH = 10 * 1024 * 1024
     JSON_SORT_KEYS = False
     LIMITER_STORAGE_URI = os.getenv("LIMITER_STORAGE_URI", "memory://")
     CORS_ORIGINS = [origin.strip() for origin in os.getenv("CORS_ORIGINS", "http://localhost:5173").split(",") if origin.strip()]

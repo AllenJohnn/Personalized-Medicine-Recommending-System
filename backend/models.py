@@ -18,6 +18,7 @@ class User(TimestampMixin, db.Model):
     histories = db.relationship("SearchHistory", backref="user", lazy=True, cascade="all, delete-orphan")
     bookmarks = db.relationship("Bookmark", backref="user", lazy=True, cascade="all, delete-orphan")
     requests = db.relationship("MedicineRequest", backref="requester", lazy=True, cascade="all, delete-orphan")
+    prescriptions = db.relationship("PrescriptionRecord", backref="user", lazy=True, cascade="all, delete-orphan")
 
     def to_dict(self):
         return {
@@ -94,3 +95,19 @@ class TokenBlocklist(TimestampMixin, db.Model):
     token_type = db.Column(db.String(20), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=True, index=True)
 
+class PrescriptionRecord(TimestampMixin, db.Model):
+    __tablename__ = "prescription_records"
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False, index=True)
+    description = db.Column(db.Text, nullable=True)
+    image_url = db.Column(db.String(255), nullable=True)
+    date_added = db.Column(db.DateTime, nullable=False, default=lambda: datetime.now(timezone.utc))
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "description": self.description,
+            "image_url": self.image_url,
+            "date_added": self.date_added.isoformat() if self.date_added else None,
+        }

@@ -289,32 +289,58 @@ async function executeSearch() {
     `;
     
     res.data.results.forEach((m, idx) => {
-        let badgeColor = m.match_score > 80 ? 'border-success text-success' : (m.match_score > 50 ? 'border-warning text-warning' : 'border-secondary text-secondary');
+        let badgeColor = m.match_score > 80 ? 'bg-success' : (m.match_score > 50 ? 'bg-warning text-dark' : 'bg-secondary');
         
         const isCompared = state.compareList.some(c => c.name === m.name);
         const compareText = isCompared ? 'Remove Compare' : 'Compare';
         const compareIcon = isCompared ? 'fa-minus' : 'fa-plus';
         
-        // Escape quotes just for the save bookmark string
         const safeName = m.name.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+        const encodedQuery = encodeURIComponent(m.name + ' medicine');
+        const googleImgUrl = `https://www.google.com/search?tbm=isch&q=${encodedQuery}`;
+        const bingImgUrl = `https://tse1.mm.bing.net/th?q=${encodedQuery}`;
         
         html += `
-            <div class="col-md-6 col-lg-4">
-                <div class="card h-100 medicine-card">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-start mb-2">
-                            <a href="https://www.google.com/search?q=${encodeURIComponent(m.name + ' medicine')}" target="_blank" class="text-decoration-none" title="Search Google">
-                                <h5 class="fw-bold mb-0 hover-blue text-dark">${m.name} <i class="fa-solid fa-arrow-up-right-from-square text-muted ms-1" style="font-size: 0.7em;"></i></h5>
-                            </a>
-                            <span class="badge ${badgeColor}">${m.match_score}% Match</span>
+            <div class="col-md-6 col-lg-4 d-flex align-items-stretch">
+                <div class="card w-100 medicine-card border-0 shadow-sm rounded-4 overflow-hidden position-relative transition" style="transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.classList.add('shadow-lg', 'scale-up')" onmouseout="this.classList.remove('shadow-lg', 'scale-up')">
+                    
+                    <a href="${googleImgUrl}" target="_blank" title="View on Google Images">
+                        <div class="position-relative bg-light">
+                            <img src="${bingImgUrl}" class="card-img-top" alt="${m.name}" style="object-fit: cover; height: 160px; width: 100%;">
+                            <div class="position-absolute bottom-0 end-0 p-2">
+                                <span class="badge bg-dark bg-opacity-75"><i class="fa-brands fa-google"></i> Images</span>
+                            </div>
                         </div>
-                        <p class="mb-2"><span class="badge bg-transparent border-dark text-dark"><i class="fa-solid fa-notes-medical me-1"></i> ${m.reason}</span></p>
-                        <p class="small text-muted mb-3 line-clamp-3">${m.description.substring(0, 100)}...</p>
-                        <p class="small mb-0"><strong><i class="fa-solid fa-circle-exclamation me-1"></i>Side Effects:</strong> ${m.side_effects.substring(0, 60)}...</p>
-                    </div>
-                    <div class="card-footer bg-transparent border-0 pt-0 pb-3 d-flex justify-content-between">
-                        <button onclick="toggleCompare(this, ${idx})" class="btn btn-sm btn-outline-dark w-50 me-2"><i class="fa-solid ${compareIcon}"></i> ${compareText}</button>
-                        <button onclick="saveBookmark('${safeName}')" class="btn btn-sm btn-dark w-50"><i class="fa-regular fa-bookmark"></i> Save</button>
+                    </a>
+
+                    <div class="card-body d-flex flex-column">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <a href="https://www.google.com/search?q=${encodedQuery}" target="_blank" class="text-decoration-none text-dark">
+                                <h5 class="fw-bold mb-0 hover-blue lh-sm">${m.name}</h5>
+                            </a>
+                            <span class="badge rounded-pill ${badgeColor} ms-2 fs-6">${m.match_score}%</span>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <span class="badge bg-light text-primary border border-primary px-2 py-1"><i class="fa-solid fa-notes-medical me-1"></i> ${m.reason}</span>
+                        </div>
+                        
+                        <p class="small text-muted mb-3 flex-grow-1" style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">
+                            ${m.description}
+                        </p>
+                        
+                        <div class="p-3 bg-light rounded-3 mb-3">
+                            <p class="small mb-0 text-danger"><i class="fa-solid fa-circle-exclamation me-1"></i><strong>Side Effects:</strong><br>${m.side_effects.substring(0, 80)}...</p>
+                        </div>
+                        
+                        <div class="d-flex gap-2 mt-auto">
+                            <button onclick="toggleCompare(this, ${idx})" class="btn btn-outline-primary flex-grow-1 fw-bold rounded-3 transition">
+                                <i class="fa-solid ${compareIcon}"></i> ${compareText}
+                            </button>
+                            <button onclick="saveBookmark('${safeName}')" class="btn btn-dark fw-bold rounded-3 transition" title="Save Bookmark">
+                                <i class="fa-regular fa-bookmark"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -433,32 +459,78 @@ async function handleSuggest(e) {
 async function loadDashboard() {
     if (!state.user) return;
     
-    document.getElementById('dashUsername').innerText = state.user.username;
-    
-    const histRes = await fetchWithAuth('/user/history');
-    const histList = document.getElementById('historyList');
-    if (histRes.success && histRes.data.length > 0) {
-        histList.innerHTML = histRes.data.map(h => `
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-                <span><i class="fa-solid fa-magnifying-glass me-2"></i>${h.query}</span>
-                <span class="badge">${new Date(h.searched_at).toLocaleDateString()}</span>
-            </li>
-        `).join('');
-    } else {
-        histList.innerHTML = '<li class="list-group-item text-muted">No search history.</li>';
-    }
-    
-    const bookRes = await fetchWithAuth('/user/bookmarks');
-    const bookList = document.getElementById('bookmarksList');
-    if (bookRes.success && bookRes.data.length > 0) {
-        bookList.innerHTML = bookRes.data.map(b => `
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-                <span class="fw-bold"><i class="fa-solid fa-pills me-2"></i>${b.medicine_name}</span>
-                <button onclick="removeBookmark('${b.medicine_name.replace(/'/g, "\\'")}')" class="btn btn-sm btn-outline-danger border-0"><i class="fa-solid fa-trash"></i></button>
-            </li>
-        `).join('');
-    } else {
-        bookList.innerHTML = '<li class="list-group-item text-muted">No saved bookmarks.</li>';
+    try {
+        const dashUser = document.getElementById('dashUsername');
+        if(dashUser) dashUser.innerText = state.user.username;
+        
+        // Load History
+        try {
+            const histRes = await fetchWithAuth('/user/history');
+            const histList = document.getElementById('historyList');
+            if (histList) {
+                if (histRes && histRes.success && Array.isArray(histRes.data) && histRes.data.length > 0) {
+                    histList.innerHTML = histRes.data.map(h => `
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span><i class="fa-solid fa-magnifying-glass me-2"></i>${h.query}</span>
+                            <span class="badge">${new Date(h.searched_at).toLocaleDateString()}</span>
+                        </li>
+                    `).join('');
+                } else {
+                    histList.innerHTML = '<li class="list-group-item text-muted">No search history.</li>';
+                }
+            }
+        } catch(e) {
+            console.error("History load error:", e);
+            document.getElementById('historyList').innerHTML = '<li class="list-group-item text-danger">Failed to load.</li>';
+        }
+        
+        // Load Bookmarks
+        try {
+            const bookRes = await fetchWithAuth('/user/bookmarks');
+            const bookList = document.getElementById('bookmarksList');
+            if (bookList) {
+                if (bookRes && bookRes.success && Array.isArray(bookRes.data) && bookRes.data.length > 0) {
+                    bookList.innerHTML = bookRes.data.map(b => `
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span class="fw-bold"><i class="fa-solid fa-pills me-2"></i>${b.medicine_name}</span>
+                            <button onclick="removeBookmark('${b.medicine_name.replace(/'/g, "\\'")}')" class="btn btn-sm btn-outline-danger border-0"><i class="fa-solid fa-trash"></i></button>
+                        </li>
+                    `).join('');
+                } else {
+                    bookList.innerHTML = '<li class="list-group-item text-muted">No saved bookmarks.</li>';
+                }
+            }
+        } catch(e) {
+            console.error("Bookmarks load error:", e);
+            document.getElementById('bookmarksList').innerHTML = '<li class="list-group-item text-danger">Failed to load.</li>';
+        }
+        
+        // Load Prescriptions
+        try {
+            const prescRes = await fetchWithAuth('/user/prescriptions');
+            const prescList = document.getElementById('prescriptionsList');
+            if (prescList) {
+                if (prescRes && prescRes.success && Array.isArray(prescRes.data) && prescRes.data.length > 0) {
+                    prescList.innerHTML = prescRes.data.map(p => `
+                        <li class="list-group-item">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="fw-bold"><i class="fa-solid fa-file-prescription me-2"></i>${p.description}</span>
+                                <span class="badge bg-secondary">${new Date(p.date_added).toLocaleDateString()}</span>
+                            </div>
+                            ${p.image_url ? `<img src="${p.image_url}" class="img-fluid mt-2 rounded border" style="max-height:200px; cursor: pointer;" onclick="openImageModal(this.src)" alt="Prescription">` : ''}
+                        </li>
+                    `).join('');
+                } else {
+                    prescList.innerHTML = '<li class="list-group-item text-muted">No prescriptions uploaded yet.</li>';
+                }
+            }
+        } catch(e) {
+            console.error("Prescriptions load error:", e);
+            document.getElementById('prescriptionsList').innerHTML = '<li class="list-group-item text-danger">Failed to load.</li>';
+        }
+        
+    } catch (e) {
+        console.error("Dashboard render error:", e);
     }
 }
 
@@ -466,6 +538,13 @@ async function clearHistory() {
     if(!confirm("Clear all search history?")) return;
     await fetchWithAuth('/user/history', { method: 'DELETE' });
     loadDashboard();
+}
+
+// Function to open image modal
+function openImageModal(src) {
+    document.getElementById('fullScreenImage').src = src;
+    const modal = new bootstrap.Modal(document.getElementById('imageModal'));
+    modal.show();
 }
 
 async function saveBookmark(name) {
@@ -491,3 +570,30 @@ window.removeBookmark = async function(name) {
 
 // Init
 window.onload = bootstrapAuth;
+async function handleUploadPrescription(e) {
+    e.preventDefault();
+    const desc = document.getElementById('prescDesc').value;
+    const fileInput = document.getElementById('prescImage');
+    const formData = new FormData();
+    formData.append('description', desc);
+    if(fileInput.files.length > 0) {
+        formData.append('image', fileInput.files[0]);
+    }
+    
+    // custom fetch since we use FormData, don't set Content-Type header to let browser set boundary
+    let options = {
+        method: 'POST',
+        body: formData,
+        headers: {}
+    };
+    if (state.accessToken) options.headers['Authorization'] = 'Bearer ' + state.accessToken;
+    if (state.csrfToken) options.headers['X-CSRFToken'] = state.csrfToken;
+    
+    const res = await fetch(API_BASE + '/user/prescriptions', options).then(r => r.json());
+    if(res.success) {
+        document.getElementById('prescriptionForm').reset();
+        loadDashboard();
+    } else {
+        alert(res.message);
+    }
+}

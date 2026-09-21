@@ -20,8 +20,7 @@ body {
 }
 
 img {
-    filter: grayscale(100%);
-    opacity: 0.9;
+    max-width: 100%;
 }
 
 h1, h2, h3, h4, h5, h6, .navbar-brand {
@@ -129,6 +128,19 @@ h1, h2, h3, h4, h5, h6, .navbar-brand {
     border-width: 2px !important;
 }
 
+.form-control::file-selector-button {
+    background-color: var(--bs-body-bg);
+    color: var(--bs-body-color);
+    border: 0;
+    border-right: 1px solid var(--border-color);
+    font-family: var(--font-mono);
+}
+
+.form-control::placeholder, textarea::placeholder {
+    color: var(--bs-body-color) !important;
+    opacity: 0.5 !important;
+}
+
 .search-box-wrapper .input-group {
     border: none !important;
 }
@@ -226,10 +238,10 @@ label, .badge, .small, .text-muted, p.text-muted, .form-label {
 
 /* -------- DARK MODE OVERRIDES -------- */
 body.dark-mode {
-    --bs-body-bg: #0f172a;
+    --bs-body-bg: #000000;
     --bs-body-color: #f8fafc;
     --bs-primary: #f8fafc;
-    --border-color: #334155;
+    --border-color: #222222;
 }
 
 body.dark-mode .card:hover {
@@ -246,37 +258,38 @@ body.dark-mode .autocomplete-item:hover {
 
 /* Force Bootstrap utilities to adapt to dark mode */
 body.dark-mode .text-dark { color: #f8fafc !important; }
-body.dark-mode .border-dark { border-color: #334155 !important; }
-body.dark-mode .text-muted { color: #94a3b8 !important; }
+body.dark-mode .border-dark { border-color: #222222 !important; }
+body.dark-mode .text-muted { color: #cbd5e1 !important; opacity: 1 !important; }
 
 body.dark-mode .btn-outline-dark {
     color: #f8fafc !important;
-    border-color: #334155 !important;
+    border-color: #333333 !important;
 }
 body.dark-mode .btn-outline-dark:hover {
-    background-color: #334155 !important;
+    background-color: #222222 !important;
 }
 
 body.dark-mode .btn-dark {
     background-color: #f8fafc !important;
-    color: #0f172a !important;
+    color: #000000 !important;
     border-color: #f8fafc !important;
 }
 body.dark-mode .btn-dark:hover {
     background-color: #cbd5e1 !important;
 }
 
-body.dark-mode .bg-dark { background-color: #1e293b !important; }
+body.dark-mode .bg-dark { background-color: #111111 !important; }
+body.dark-mode .bg-light { background-color: #1a1a1a !important; color: #ffffff !important; }
 
 body.dark-mode .table, 
 body.dark-mode .table th, 
 body.dark-mode .table td {
     color: #f8fafc !important;
-    border-color: #334155 !important;
+    border-color: #222222 !important;
     background-color: transparent !important;
 }
 body.dark-mode .table-light th {
-    background-color: #1e293b !important;
+    background-color: #111111 !important;
 }
 
 /* -------- COMPARE MODAL -------- */

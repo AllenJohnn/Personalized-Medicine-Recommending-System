@@ -1,10 +1,11 @@
 from flask import Blueprint, current_app, request
 from flask_jwt_extended import get_jwt_identity, jwt_required
+import os
+from werkzeug.utils import secure_filename
 
 from backend.extensions import db
-from backend.models import Bookmark, SearchHistory, User
+from backend.models import Bookmark, SearchHistory, User, PrescriptionRecord
 from backend.utils import json_response, validate_medicine_name
-
 
 user_bp = Blueprint("user", __name__, url_prefix="/api/user")
 
@@ -17,7 +18,7 @@ def history():
         return json_response(False, None, "User not found.", 404)
 
     items = (
-        SearchHistory.query.filter_by(user_id=user.id)
+        db.session.query(SearchHistory).filter_by(user_id=user.id)
         .order_by(SearchHistory.searched_at.desc())
         .limit(20)
         .all()
@@ -32,7 +33,7 @@ def clear_history():
     if user is None:
         return json_response(False, None, "User not found.", 404)
 
-    SearchHistory.query.filter_by(user_id=user.id).delete()
+    db.session.query(SearchHistory).filter_by(user_id=user.id).delete()
     db.session.commit()
     return json_response(True, None, "History cleared.")
 
@@ -84,3 +85,38 @@ def remove_bookmark(name: str):
     db.session.delete(bookmark)
     db.session.commit()
     return json_response(True, None, "Bookmark removed.")
+
+
+@user_bp.get("/prescriptions")
+@jwt_required()
+def prescriptions():
+    user = db.session.get(User, get_jwt_identity())
+    if user is None:
+        return json_response(False, None, "User not found.", 404)
+    items = PrescriptionRecord.query.filter_by(user_id=user.id).order_by(PrescriptionRecord.date_added.desc()).all()
+    return json_response(True, [item.to_dict() for item in items], "Prescriptions loaded.")
+
+@user_bp.post("/prescriptions")
+@jwt_required()
+def add_prescription():
+    user = db.session.get(User, get_jwt_identity())
+    if user is None:
+        return json_response(False, None, "User not found.", 404)
+    
+    description = request.form.get("description", "")
+    file = request.files.get("image")
+    
+    image_url = None
+    if file and file.filename:
+        filename = secure_filename(file.filename)
+        # Save to static_frontend/uploads
+        upload_folder = os.path.join(current_app.config["FRONTEND_DIST"], "uploads")
+        os.makedirs(upload_folder, exist_ok=True)
+        filepath = os.path.join(upload_folder, filename)
+        file.save(filepath)
+        image_url = f"/uploads/{filename}"
+        
+    record = PrescriptionRecord(user_id=user.id, description=description, image_url=image_url)
+    db.session.add(record)
+    db.session.commit()
+    return json_response(True, record.to_dict(), "Prescription saved.", 201)
